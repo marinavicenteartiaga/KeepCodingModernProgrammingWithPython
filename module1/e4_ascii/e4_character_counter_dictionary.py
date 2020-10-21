@@ -8,5 +8,5 @@ for character in my_text:
     else:
         frequencies[character] = 1
 
-for letter in frequencies.keys():
-    print(letter, "-", frequencies[letter])
+for character in frequencies.keys():
+    print(character, "-", frequencies[character])
