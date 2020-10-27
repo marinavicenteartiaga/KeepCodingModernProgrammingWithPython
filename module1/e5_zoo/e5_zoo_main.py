@@ -1,18 +1,44 @@
 import screen
 
-prices = {2: 0, 12: 14, 65: 23, 99: 10}
+prices = {
+        "Baby": 0.0,
+        "Kid": 14.0,
+        "Adult": 23.0,
+        "Retired": 18.0
+    }
+
+totals = {"Baby": 0, "Kid": 0, "Adult": 0, "Retired": 0}
+
+tickets = {
+        "Baby": {
+            "quantity": (4, 15),
+            "price": (4, 19),
+        },
+        "Kid": {
+            "quantity": (5, 15),
+            "price": (5, 19),
+        },
+        "Adult": {
+            "quantity": (6, 15),
+            "price": (6, 19),
+        },
+        "Retired": {
+            "quantity": (7, 15),
+            "price": (7, 19),
+        }
+    }
 
 def get_ticket_price(input_age):
     if 0 < input_age <= 2:
-        price = 0
+        ticket_type = "Baby"
     elif input_age <= 12:
-        price = 14
+        ticket_type = "Kid"
     elif input_age < 65:
-        price = 23
+        ticket_type = "Adult"
     else:
-        price = 18
+        ticket_type = "Retired"
 
-    return price
+    return ticket_type
 
 
 def validate_input(string):
@@ -30,49 +56,51 @@ def ask_age():
     input_age = input("What's your age? ")
     while not validate_input(input_age):
         print("Wrong age. Try it again!")
-        screen.locate(1, 2)
+        screen.locate(1, 1)
         input_age = input("What's your age? ")
 
     return int(input_age)
 
 
-screen.clear()
-age = ask_age()
-total_price = 0
-line = 4
+def print_screen():
+    screen.locate(5, 5)
+    print("Baby....:   -'")
+    screen.locate(6, 5)
+    print("Kid.....:   -'")
+    screen.locate(7, 5)
+    print("Adult...:   -'")
+    screen.locate(8, 5)
+    print("Retired.:   -'")
 
-n_tickets_baby = 0
-n_tickets_kid = 0
-n_tickets_adult = 0
-n_tickets_retired = 0
+    screen.locate(9, 8)
+    print("Total...: ")
 
-while age != 0:
-    ticket_price = get_ticket_price(age)
-    if ticket_price == 0:
-        line = 4
-        n_tickets_baby += 1
-        screen.locate(line, 1)
-        print("Ticket price: {}\tNum. Tickets: {}".format(ticket_price, n_tickets_baby))
-    if ticket_price == 14:
-        line = 5
-        n_tickets_kid += 1
-        screen.locate(line, 1)
-        print("Ticket price: {}\tNum. Tickets: {}".format(ticket_price, n_tickets_kid))
-    if ticket_price == 23:
-        line = 6
-        n_tickets_adult += 1
-        screen.locate(line, 1)
-        print("Ticket price: {}\tNum. Tickets: {}".format(ticket_price, n_tickets_adult))
-    if ticket_price == 18:
-        line = 7
-        n_tickets_retired += 1
-        screen.locate(line, 1)
-        print("Ticket price: {}\tNum. Tickets: {}".format(ticket_price, n_tickets_retired))
 
-    line += 1
-    total_price += ticket_price
-
+def main():
+    screen.clear()
+    print_screen()
     age = ask_age()
+    total_price = 0.0
+    line = 4
 
-screen.locate(line, 1)
-print("Total: {}".format(total_price))
+    while age != 0:
+        ticket_type = get_ticket_price(age)
+        ticket_price = prices[ticket_type]
+
+        totals[ticket_type] += 1
+
+        screen.locate(tickets[ticket_type]["quantity"][0], tickets[ticket_type]["quantity"][1])
+        print(totals[ticket_type])
+        screen.locate(tickets[ticket_type]["price"][0], tickets[ticket_type]["price"][1])
+        print("{:7.2f}€".format(totals[ticket_type]*ticket_price))
+
+        total_price += ticket_price
+        screen.locate(9, 19)
+        print("{:7.2f}€".format(total_price))
+
+        age = ask_age()
+
+    screen.locate(11, 1)
+
+
+main()
