@@ -52,36 +52,34 @@ def validate_input(string):
 
 
 def ask_age():
-    screen.locate(1, 1)
-    input_age = input("What's your age? ")
+    input_age = screen.input_line("What's your age? ", 1, 1)
     while not validate_input(input_age):
-        print("Wrong age. Try it again!")
-        screen.locate(1, 1)
-        input_age = input("What's your age? ")
+        screen.format_line(0, 33, 41)
+        screen.print_line("Wrong age. Try it again!", 25, 1, True)
+        input_age = screen.input_line("What's your age? ", 1, 1)
+
+    screen.clear_line(25)
 
     return int(input_age)
 
 
 def print_screen():
-    screen.locate(5, 5)
-    print("Baby....:   -'")
-    screen.locate(6, 5)
-    print("Kid.....:   -'")
-    screen.locate(7, 5)
-    print("Adult...:   -'")
-    screen.locate(8, 5)
-    print("Retired.:   -'")
+    screen.print_line("Baby....:   -'", 4, 5)
+    screen.print_line("Kid.....:   -'", 5, 5)
+    screen.print_line("Adult...:   -'", 6, 5)
+    screen.print_line("Retired.:   -'", 7, 5)
 
-    screen.locate(9, 8)
-    print("Total...: ")
+    screen.format_line(1)
+    screen.print_line("Total...: ", 9, 8)
+    screen.reset()
 
 
 def main():
     screen.clear()
     print_screen()
+
     age = ask_age()
     total_price = 0.0
-    line = 4
 
     while age != 0:
         ticket_type = get_ticket_price(age)
@@ -89,15 +87,16 @@ def main():
 
         totals[ticket_type] += 1
 
-        screen.locate(tickets[ticket_type]["quantity"][0], tickets[ticket_type]["quantity"][1])
-        print(totals[ticket_type])
-        screen.locate(tickets[ticket_type]["price"][0], tickets[ticket_type]["price"][1])
-        print("{:7.2f}€".format(totals[ticket_type]*ticket_price))
+        screen.print_line(totals[ticket_type], \
+                          tickets[ticket_type]["quantity"][0], tickets[ticket_type]["quantity"][1])
+
+        screen.print_line("{:7.2f}€".format(totals[ticket_type]*ticket_price), \
+                          tickets[ticket_type]["price"][0], tickets[ticket_type]["price"][1])
 
         total_price += ticket_price
-        screen.locate(9, 19)
-        print("{:7.2f}€".format(total_price))
-
+        screen.format_line(1)
+        screen.print_line("{:7.2f}€".format(total_price), 9, 19)
+        screen.reset()
         age = ask_age()
 
     screen.locate(11, 1)
