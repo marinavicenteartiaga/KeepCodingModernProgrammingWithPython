@@ -1,4 +1,4 @@
-import screen
+from module1.e5_zoo import presentation, screen
 
 prices = {
         "Baby": 0.0,
@@ -40,45 +40,11 @@ def get_ticket_price(input_age):
 
     return ticket_type
 
-
-def validate_input(string):
-    try:
-        number = int(string)
-        if number >= 0:
-            return True
-        return False
-    except:
-        return False
-
-
-def ask_age():
-    input_age = screen.input_line("What's your age? ", 1, 1)
-    while not validate_input(input_age):
-        screen.format_line(0, 33, 41)
-        screen.print_line("Wrong age. Try it again!", 25, 1, True)
-        input_age = screen.input_line("What's your age? ", 1, 1)
-
-    screen.clear_line(25)
-
-    return int(input_age)
-
-
-def print_screen():
-    screen.print_line("Baby....:   -'", 4, 5)
-    screen.print_line("Kid.....:   -'", 5, 5)
-    screen.print_line("Adult...:   -'", 6, 5)
-    screen.print_line("Retired.:   -'", 7, 5)
-
-    screen.format_line(1)
-    screen.print_line("Total...: ", 9, 8)
-    screen.reset()
-
-
 def main():
     screen.clear()
-    print_screen()
+    presentation.print_screen()
 
-    age = ask_age()
+    age = presentation.ask_age()
     total_price = 0.0
 
     while age != 0:
@@ -90,14 +56,14 @@ def main():
         screen.print_line(totals[ticket_type], \
                           tickets[ticket_type]["quantity"][0], tickets[ticket_type]["quantity"][1])
 
-        screen.print_line("{:7.2f}€".format(totals[ticket_type]*ticket_price), \
+        screen.print_line("{:7.2f}€".format(totals[ticket_type] * ticket_price), \
                           tickets[ticket_type]["price"][0], tickets[ticket_type]["price"][1])
 
         total_price += ticket_price
         screen.format_line(1)
         screen.print_line("{:7.2f}€".format(total_price), 9, 19)
         screen.reset()
-        age = ask_age()
+        age = presentation.ask_age()
 
     screen.locate(11, 1)
 
